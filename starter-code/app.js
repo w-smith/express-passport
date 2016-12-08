@@ -3,7 +3,6 @@ var app          = express();
 var mongoose     = require('mongoose');
 var passport     = require('passport');
 var flash        = require('connect-flash');
-var hbs   = require("hbs");
 var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
@@ -15,8 +14,10 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser()); 
 
-app.set('view engine', 'hbs');
-app.set("views","./views");
+app.set('views', './views');
+app.engine('ejs', require('ejs').renderFile);
+app.set('view engine', 'ejs');
+
 app.use(express.static(__dirname + '/public'));
 
 app.use(session({ secret: 'WDI-GENERAL-ASSEMBLY-EXPRESS' })); 
