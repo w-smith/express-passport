@@ -241,38 +241,40 @@ In our current Node app, back when we created the signup strategy, in the callba
 
 This will store the message 'This email is already used.' into the response object and then we will be able to use it in the views. This is really useful to send back details about the process happening on the server to the client.
 
+<!-- 5 minutes -->
 
-## Incorporating Flash Messages - Codealong (5 mins)
+## Incorporating Flash Messages - Codealong
 
-In the view `signup.hbs`, before the form, add:
+In the view `signup.ejs`, before the form, add:
 
-```hbs
-  {{#if message}}
-    <div class="alert alert-danger">{{message}}</div>
-  {{/if}}
+```ejs
+  <% if (message) %>
+    <div class="alert alert-danger"><%= message %></div>
 ```
 
 Let's add some code into `getSignup` in the users Controller to render the template:
 
 ```javascript
   function getSignup(request, response) {
-    response.render('signup.hbs', { message: request.flash('signupMessage') });
+    response.render('signup.ejs', { message: request.flash('signupMessage') });
   }
 ```
 
-Now, start up the app using `nodemon app.js` and visit `http://localhost:3000/signup` and try to signup two times with the same email, you should see the message "This email is already used." appearing when the form is reloaded.
+Now, let's start up the app using `nodemon app.js` and visit `http://localhost:3000/signup` and try to sign up two times with the same email. We should see the message "This email is already used." appearing when the form is reloaded.
 
+<!-- 5 minutes -->
 
-## Test it out - Independent Practice (5 mins)
+## Test it out - Independent Practice
 
 All the logic for the signup is now set - you should be able to go to `/signup` and create a user.
 
+<!-- 15 minutes -->
 
-## Sign-in - Codealong (10 mins)
+## Sign-in - Codealong
 
 Now we need to write the `signin` logic.
 
-We also need to implement a custom strategy for the login, In passport.js, after the signup strategy, add add a new LocalStrategy:
+We also need to implement a custom strategy for the login. In `passport.js`, after the signup strategy, add a new LocalStrategy:
 
 ```javascript
   passport.use('local-login', new LocalStrategy({
@@ -286,7 +288,7 @@ We also need to implement a custom strategy for the login, In passport.js, after
 
 The first argument is the same as for the signup strategy - we ask passport to recognize the fields `email` and `password` and to pass the request to the callback function.
 
-For this strategy, we will search for a user document using the email received in the request, then if a user is found, we will try to compare the hashed password stored in the database to the one received in the request params. If they are equal, the the user is authenticated; if not, then the password is wrong.
+For this strategy, we will search for a user document using the email received in the request. If a user is found, we will try to compare the hashed password stored in the database to the one received in the request params. If they are equal, then the user is authenticated; if not, then the password is wrong.
 
 Inside `config/passport.js` let's add this code:
 
@@ -330,12 +332,11 @@ We need to add a new method to the user schema in `user.js` so that we can use t
 
 As we are again using flash messages, we will need to add some code to display them in the view:
 
-In `login.hbs`, add the same code that we added in `signup.hbs` to display the flash messages:
+In `login.ejs`, add the same code that we added in `signup.ejs` to display the flash messages:
 
 ```javascript
-  {{#if message}}
-    <div class="alert alert-danger">{{message}}</div>
-  {{/if}}
+  <% if (message) %>
+    <div class="alert alert-danger"><%= message %></div>
 ```
 
 #### Login GET Route handler
@@ -344,7 +345,7 @@ Now, let's add the code to render the login form in the `getLogin` action in the
 
 ```javascript
   function getLogin(request, response) {
-    response.render('login.hbs', { message: request.flash('loginMessage') });
+    response.render('login.ejs', { message: request.flash('loginMessage') });
   }
 ```
 
@@ -352,7 +353,7 @@ You'll notice that the flash message has a different name (`loginMessage`) than 
 
 #### Login POST Route handler
 
-We also need to have a route handler that deals with the login form after we have submit it. So in `users.js` lets also add:
+We also need to have a route handler that deals with the login form after we have submitted it. So in `users.js` lets also add:
 
 ```javascript
   function postLogin(request, response) {
@@ -368,16 +369,20 @@ We also need to have a route handler that deals with the login form after we hav
 
 You should be able to login now!
 
-## Test it out - Independent Practice (5 mins)
+<!-- 5 minutes -->
+
+## Test it out - Independent Practice
 
 #### Invalid Login
 
 First try to login with:
 
-- a valid email
+- an invalid email (one that hasn't been signed up yet)
 - an invalid password
 
-You should also see the message 'Oops! Wrong password.'
+<!--And what should they see the first time? -->
+
+You should see the message 'Oops! Wrong password.' the second time through.
 
 #### Valid Login
 
@@ -388,7 +393,7 @@ The login strategy has now been setup!
 
 #### Accessing the User object globally
 
-By default, passport will make the user available on the object `request`. In most cases, we want to be able to use the user object everywhere, for that, we're going to add a middleware in `app.js`:
+By default, passport will make the user available on the object `request`. In most cases, we want to be able to use the user object everywhere. For that, we're going to add some middleware in `app.js`:
 
 ```javascript
   require('./config/passport')(passport);
@@ -403,16 +408,17 @@ Now in the layout, we can add:
 
 ```javascript
 <ul>
-  {{#if currentUser}}
-    <li><a href="/logout">Logout {{currentUser.local.email}}</a></li>
+  <% if (currentUser) %>
+    <li><a href="/logout">Logout <%= currentUser.local.email %></a></li>
   {{else}}
     <li><a href="/login">Login</a></li>
-    <li><a href="/signup">Signup</a></li>
-  {{/if}}                
+    <li><a href="/signup">Signup</a></li>               
 </ul>
 ```
 
-## Signout - Codealong (10 mins)
+<!--5 minutes -->
+
+## Signout - Codealong
 
 #### Logout
 
@@ -426,15 +432,19 @@ function getLogout(request, response) {
 }
 ```
 
-## Test it out - Independent Practice (5 mins)
+<!-- 5 minutes -->
+
+## Test it out - Independent Practice
 
 You should now be able to login and logout! Test this out.
 
-## Restricting access (10 mins)
+<!-- 10 minutes -->
+
+## Restricting access
 
 As you know, an authentication system is used to allow/deny access to some resources to authenticated users.
 
-Let's now turn our attention to the `secret` route handler and it's associated template.
+Let's now turn our attention to the `secret` route handler and its associated template.
 
 To restrict access to this route, we're going to add a method at the top of `config/routes.js`:
 
@@ -448,7 +458,7 @@ To restrict access to this route, we're going to add a method at the top of `con
   }
 ```
 
-Now when we want to "secure" access to a particular route, we will add a call to the method in the route definition.
+Now, when we want to "secure" access to a particular route, we will add a call to the method in the route definition.
 
 For the `/secret` route, we need to add this to the `/config/routes.js` file:
 
@@ -461,18 +471,22 @@ Now every time the route `/secret` is called, the method `authenticatedUser` wil
 
 Now test it out by clicking on the secret page link. You should see: "This page can only be accessed by authenticated users"
 
+<!--20 minutes -->
 
-## Independent Practice (20 minutes)
+## Independent Practice
 
-> ***Note:*** _This can be a pair programming activity or done independently._
+> ***Note:*** _This will be a pair programming activity._
 
 - Add pages with restricted access.
 
 - Once the user is authenticated, make sure he/she can't access the sign-in or sign-up and redirect with a message, and vice-versa for the logout
 
-## Conclusion (5 mins)
+<!-- 5 minutes -->
+
+## Conclusion
 
 Passport is a really useful tool because it allows developers to abstract the logic of authentication and customize it, if needed. It comes with a lot of extensions that we will cover later.
 
+<!-- I don't think I even understand this -->
 - How do salts work with hashing?
 - Briefly describe the authentication process using passport in Express.
