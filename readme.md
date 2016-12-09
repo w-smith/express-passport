@@ -98,9 +98,13 @@ First we will implement the signup logic. For this, we will have:
 1. a route action to display the signup form
 2. a route action to receive the params sent by the form
 
+<!--CFU: What are the restful names for these routes? -->
+
 When the server receives the signup params, the job of saving the user data into the database, hashing the password and validating the data will be delegated to the strategy allocated for this part of the authentication. This logic will be written in `config/passport.js`
 
 Open the file `config/passport.js` and add:
+
+<!--Point out that we are creating a local strategy, but they may use FB, Google, or another 3rd party for Project 2 auth which would be a different strategy-->
 
 ```javascript
 var LocalStrategy   = require('passport-local').Strategy;
@@ -123,7 +127,7 @@ By default, passport-local expects to find the fields `username` and `password` 
 
 The third property will tell the strategy to send the request object to the callback so that we can do further things with it.
 
-Then, we pass the function that we want to be executed as a callback when this strategy is called: this callback method will receive the request object; the values corresponding to the authentication fields; and the callback method(`done`) to execute when this 'strategy' is done.
+Then, we pass the function that we want to be executed as a callback when this strategy is called: this callback method will receive the request object; the values corresponding to the authentication fields; and the callback method to execute when this 'strategy' is done.
 
 Now, inside this callback method, we will implement our custom logic to signup a user.
 
@@ -412,11 +416,12 @@ Now in the layout, we can add:
 
 ```javascript
 <ul>
-  <% if (currentUser) %>
+  <% if (currentUser) {%>
     <li><a href="/logout">Logout <%= currentUser.local.email %></a></li>
-  <% else %>
+  <% } else { %>
     <li><a href="/login">Login</a></li>
-    <li><a href="/signup">Signup</a></li>               
+    <li><a href="/signup">Signup</a></li> 
+  <% } %>
 </ul>
 ```
 
