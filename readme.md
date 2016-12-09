@@ -57,8 +57,10 @@ The starter-code is structured like this:
     │   └── css
     │       └── bootstrap.min.css
     └── views
+    	└── partials
+	    ├── header.ejs
+	    └── footer.js
         ├── index.ejs
-        ├── layout.ejs
         ├── login.ejs
         ├── secret.ejs
         └── signup.ejs
