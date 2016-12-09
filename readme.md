@@ -1,4 +1,4 @@
-<!--5 minutes -->
+<!--12:10 5 minutes -->
 
 <!--Hook: -->
 
@@ -16,7 +16,7 @@
 - **Create** a Mongoose Model
 - **Describe** an authentication model
 
-<!--5 minutes -->
+<!--12:15 5 minutes -->
 ## Passport - Intro
 
 From the [passport website](http://passportjs.org/docs):
@@ -27,11 +27,11 @@ _In modern web applications, authentication can take a variety of forms. Traditi
 
 ### Strategies
 <!--This could be rewritten more clearly -->
-The main concept when using passport is to register _Strategies_.  A strategy is a passport Middleware that will create some action in the background and execute a callback; the callback should be called with different arguments depending on whether the action that has been performed in the strategy was successful or not. Based on this and on some config params, passport will redirect the request to different paths.
+The main concept when using passport is to register _Strategies_.  A strategy is passport Middleware that will run an authentication action in the background and then execute a callback; the callback will be called with different arguments depending on whether the action that has been performed in the strategy was successful or not. Based on this and on some config params, passport will redirect the request to different paths.  
 
-Because strategies are packaged as individual modules, we can pick and choose which ones we need for our application. This logic allows the developer to keep the code simple - without unnecessary dependencies - in the controller and delegate the proper authentication job to some specific passport code.
+For instance, if login is not successful, passport may redirect to the `/login` page.  If successful, it may redirect to the homepage.
 
-<!-- 30 minutes -->
+<!--12:20 5 minutes -->
 ## Implementing Passport.js - Catch-up
 
 #### Setup/Review Starter Code
@@ -86,6 +86,8 @@ The `statics.js` controller just has the home action.
 #### Routes.js
 
 We have separated the routes into their own `routes.js` file in the `config` folder.
+
+<!--1:30 25 minutes -->
 
 #### Signup
 
@@ -201,7 +203,7 @@ The second argument tells passport what to do in case of a success or failure.
 
 #### Session
 
-We've seen in previous lessons that authentication is based on a value stored in a cookie, and then, this cookie is sent to the server for every request until the session expires or is destroyed. This is a form of [serialization](https://en.wikipedia.org/wiki/Serialization).
+We have talked briefly before about cookies.  Authentication is based on a value stored in a cookie in the browser. This cookie is sent to the server for every request until the session expires or is destroyed. This is a form of [serialization](https://en.wikipedia.org/wiki/Serialization).
 
 To use the session with passport, we need to create two new methods in `config/passport.js` :
 
@@ -227,7 +229,7 @@ The method `serializeUser` will be used when a user signs in or signs up, passpo
 
 The second method will then be called every time there is a value for passport in the session cookie. In this method, we will receive the value stored in the cookie, in our case the `user.id`, then search for a user using this ID and then call the callback. The user object will then be stored in the request object passed to all controller methods calls.
 
-<!--5 minutes -->
+<!--1:55 5 minutes -->
 
 ## Flash Messages - Intro
 
@@ -241,7 +243,7 @@ In our current Node app, back when we created the signup strategy, in the callba
 
 This will store the message 'This email is already used.' into the response object and then we will be able to use it in the views. This is really useful to send back details about the process happening on the server to the client.
 
-<!-- 5 minutes -->
+<!--2:00 5 minutes -->
 
 ## Incorporating Flash Messages - Codealong
 
@@ -252,7 +254,7 @@ In the view `signup.ejs`, before the form, add:
     <div class="alert alert-danger"><%= message %></div>
 ```
 
-Let's add some code into `getSignup` in the users Controller to render the template:
+Finally, we need to render this template when we go to the `'/signup'` page, so let's add some code into `getSignup` in the `users` Controller:
 
 ```javascript
   function getSignup(request, response) {
@@ -262,13 +264,13 @@ Let's add some code into `getSignup` in the users Controller to render the templ
 
 Now, let's start up the app using `nodemon app.js` and visit `http://localhost:3000/signup` and try to sign up two times with the same email. We should see the message "This email is already used." appearing when the form is reloaded.
 
-<!-- 5 minutes -->
+<!-- 2:05 5 minutes -->
 
 ## Test it out - Independent Practice
 
 All the logic for the signup is now set - you should be able to go to `/signup` and create a user.
 
-<!-- 15 minutes -->
+<!-- 2:10 15 minutes -->
 
 ## Sign-in - Codealong
 
@@ -369,7 +371,7 @@ We also need to have a route handler that deals with the login form after we hav
 
 You should be able to login now!
 
-<!-- 5 minutes -->
+<!--2:25 5 minutes -->
 
 ## Test it out - Independent Practice
 
@@ -393,7 +395,7 @@ The login strategy has now been setup!
 
 #### Accessing the User object globally
 
-By default, passport will make the user available on the object `request`. In most cases, we want to be able to use the user object everywhere. For that, we're going to add some middleware in `app.js`:
+By default, passport will make the user available on the object `request`. In most cases, we want to be able to use the user object everywhere. For that, we're going to add some middleware in `app.js` underneath our passport require statement:
 
 ```javascript
   require('./config/passport')(passport);
@@ -410,13 +412,13 @@ Now in the layout, we can add:
 <ul>
   <% if (currentUser) %>
     <li><a href="/logout">Logout <%= currentUser.local.email %></a></li>
-  {{else}}
+  <% else %>
     <li><a href="/login">Login</a></li>
     <li><a href="/signup">Signup</a></li>               
 </ul>
 ```
 
-<!--5 minutes -->
+<!--2:30 5 minutes -->
 
 ## Signout - Codealong
 
@@ -432,13 +434,13 @@ function getLogout(request, response) {
 }
 ```
 
-<!-- 5 minutes -->
+<!--2:35 5 minutes -->
 
 ## Test it out - Independent Practice
 
 You should now be able to login and logout! Test this out.
 
-<!-- 10 minutes -->
+<!--2:40 10 minutes -->
 
 ## Restricting access
 
@@ -471,22 +473,11 @@ Now every time the route `/secret` is called, the method `authenticatedUser` wil
 
 Now test it out by clicking on the secret page link. You should see: "This page can only be accessed by authenticated users"
 
-<!--20 minutes -->
-
-## Independent Practice
-
-> ***Note:*** _This will be a pair programming activity._
-
-- Add pages with restricted access.
-
-- Once the user is authenticated, make sure he/she can't access the sign-in or sign-up and redirect with a message, and vice-versa for the logout
-
-<!-- 5 minutes -->
+<!-- 2:50 5 minutes -->
 
 ## Conclusion
 
 Passport is a really useful tool because it allows developers to abstract the logic of authentication and customize it, if needed. It comes with a lot of extensions that we will cover later.
 
-<!-- I don't think I even understand this -->
-- How do salts work with hashing?
+- What does it mean for a user to be "logged in"?
 - Briefly describe the authentication process using passport in Express.
