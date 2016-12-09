@@ -475,6 +475,10 @@ Now every time the route `/secret` is called, the method `authenticatedUser` wil
 
 Now test it out by clicking on the secret page link. You should see: "This page can only be accessed by authenticated users"
 
+### Final Challenge
+
+Go into the `controllers.js` file and add a super-secret JSON response to the `secret` function.  Now try logging in and getting to the super-secret JSON message.
+
 <!-- 2:50 5 minutes -->
 
 ## Conclusion
