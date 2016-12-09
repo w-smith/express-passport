@@ -492,3 +492,7 @@ Passport is a really useful tool because it allows developers to abstract the lo
 
 - What does it mean for a user to be "logged in"?
 - Briefly describe the authentication process using passport in Express.
+
+## Resources
+
+- [Passport Docs](http://passportjs.org/docs)
