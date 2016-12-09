@@ -27,6 +27,8 @@ From the [passport website](http://passportjs.org/docs):
 
 _In modern web applications, authentication can take a variety of forms. Traditionally, users log in by providing a username and password. With the rise of social networking, single sign-on using an OAuth provider such as Facebook or Twitter has become a popular authentication method. Services that expose an API often require token-based credentials to protect access._"
 
+<!--1:37 actually -->
+
 ### Strategies
 
 The main concept when using passport is to register _Strategies_.  A strategy is passport Middleware that will run an authentication action in the background and then execute a callback; the callback will be called with different arguments depending on whether the action that has been performed in the strategy was successful or not. Based on this and on some config params, passport will redirect the request to different paths.  
@@ -39,6 +41,8 @@ For instance, if login is not successful, passport may redirect to the `/login` 
 #### Setup/Review Starter Code
 
 First, fork and clone the starter code, and `npm install` to ensure that we have all of the correct dependencies.
+
+<!--1:40 actually-->
 
 The starter-code is structured like this:
 
@@ -169,6 +173,8 @@ If no user is returned, it means that the email received in the request can be u
 
 Based on the second argument (`false` or a `user` object), passport will know if the strategy has been successfully executed, and if the request should redirect to the `success` or `failure` path. (see below).
 
+<!--2:11 actually -->
+
 #### User.js
 
 The last thing is to add the method `encrypt` to the user model to hash the password received and save it as encrypted:
@@ -236,6 +242,8 @@ What exactly are we doing here? To keep a user logged in, we will need to serial
 The method `serializeUser` will be used when a user signs in or signs up, passport will call this method, our code will then call the `done` callback, the second argument is what we want to be serialized.
 
 The second method will then be called every time there is a value for passport in the session cookie. In this method, we will receive the value stored in the cookie, in our case the `user.id`, then search for a user using this ID and then call the callback. The user object will then be stored in the request object passed to all controller methods calls.
+
+<!-- Actually 2:25 -->
 
 <!--1:55 5 minutes -->
 
@@ -414,7 +422,7 @@ By default, passport will make the user available on the object `request`. In mo
   });
 ```
 
-Now in the layout, we can add:
+Now in the header partial, we can add:
 
 ```javascript
 <ul>
@@ -498,3 +506,5 @@ Passport is a really useful tool because it allows developers to abstract the lo
 ## Resources
 
 - [Passport Docs](http://passportjs.org/docs)
+
+<!-- Didn't finish till 3:51 -->
