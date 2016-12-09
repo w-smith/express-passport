@@ -1,3 +1,5 @@
+<!--Had to start at 1:30 -->
+
 <!--12:10 5 minutes -->
 
 <!--Hook: -->
@@ -8,7 +10,7 @@
 *After this class, students should be able to:*
 - **Create** a login form with email & password
 - **Use** passport-local to find a user & verify their password
-- **Restrict** access to API without an authenticated user
+- **Restrict** access by authenticating a user
 
 ## Preparation
 *Before this class, students should be able to:*
@@ -26,7 +28,7 @@ From the [passport website](http://passportjs.org/docs):
 _In modern web applications, authentication can take a variety of forms. Traditionally, users log in by providing a username and password. With the rise of social networking, single sign-on using an OAuth provider such as Facebook or Twitter has become a popular authentication method. Services that expose an API often require token-based credentials to protect access._"
 
 ### Strategies
-<!--This could be rewritten more clearly -->
+
 The main concept when using passport is to register _Strategies_.  A strategy is passport Middleware that will run an authentication action in the background and then execute a callback; the callback will be called with different arguments depending on whether the action that has been performed in the strategy was successful or not. Based on this and on some config params, passport will redirect the request to different paths.  
 
 For instance, if login is not successful, passport may redirect to the `/login` page.  If successful, it may redirect to the homepage.
