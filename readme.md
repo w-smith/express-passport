@@ -196,14 +196,14 @@ Now we need to use this strategy in the route handler.
 In the `users.js` controller, for the method `postSignup`, we will add the call to the strategy we've declared
 
 ```javascript
-  function postSignup(request, response) {
+  function postSignup(request, response, next) {
     var signupStrategy = passport.authenticate('local-signup', {
       successRedirect : '/',
       failureRedirect : '/signup',
       failureFlash : true
     });
 
-    return signupStrategy(request, response);
+    return signupStrategy(request, response, next);
   }
 ```
 
@@ -273,7 +273,7 @@ In the view `signup.ejs`, before the form, add:
 Finally, we need to render this template when we go to the `'/signup'` page, so let's add some code into `getSignup` in the `users` Controller:
 
 ```javascript
-  function getSignup(request, response) {
+  function getSignup(request, response, next) {
     response.render('signup.ejs', { message: request.flash('signupMessage') });
   }
 ```
@@ -362,7 +362,7 @@ In `login.ejs`, add the same code that we added in `signup.ejs` to display the f
 Now, let's add the code to render the login form in the `getLogin` action in the controller (`users.js`):
 
 ```javascript
-  function getLogin(request, response) {
+  function getLogin(request, response, next) {
     response.render('login.ejs', { message: request.flash('loginMessage') });
   }
 ```
@@ -374,14 +374,14 @@ You'll notice that the flash message has a different name (`loginMessage`) than 
 We also need to have a route handler that deals with the login form after we have submitted it. So in `users.js` lets also add:
 
 ```javascript
-  function postLogin(request, response) {
+  function postLogin(request, response, next) {
     var loginProperty = passport.authenticate('local-login', {
       successRedirect : '/',
       failureRedirect : '/login',
       failureFlash : true
     });
 
-    return loginProperty(request, response);
+    return loginProperty(request, response, next);
   }
 ```
 
@@ -445,7 +445,7 @@ The last action to implement for our authentication system is to set the logout 
 
 In `controllers/users.js`:
 ```js
-function getLogout(request, response) {
+function getLogout(request, response, next) {
   request.logout();
   response.redirect('/');
 }
