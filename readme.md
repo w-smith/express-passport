@@ -2,7 +2,7 @@
 
 <!--12:10 5 minutes -->
 
-<!--Hook: -->
+<!--Hook: Try to think back to our work in Mongo and Mongoose, saving objects to our database.  Another object we may want to save is our user.  And that process is basically the same as it was with our objects.  Except for a couple pieces that make it a little harder.  Today, we'll talk about those.-->
 
 # Local Authentication with Express and Passport
 
@@ -214,7 +214,6 @@ The second argument tells passport what to do in case of a success or failure.
 - If the authentication was successful, then the response will redirect to `/`
 - In case of failure, the response will redirect back to the form `/signup`
 
-
 #### Session
 
 We have talked briefly before about cookies.  Authentication is based on a value stored in a cookie in the browser. This cookie is sent to the server for every request until the session expires or is destroyed. This is a form of [serialization](https://en.wikipedia.org/wiki/Serialization).
@@ -241,7 +240,7 @@ What exactly are we doing here? To keep a user logged in, we will need to serial
 
 The method `serializeUser` will be used when a user signs in or signs up, passport will call this method, our code will then call the `done` callback, the second argument is what we want to be serialized.
 
-The second method will then be called every time there is a value for passport in the session cookie. In this method, we will receive the value stored in the cookie, in our case the `user.id`, then search for a user using this ID and then call the callback. The user object will then be stored in the request object passed to all controller methods calls.
+The second method will then be called every time there is a value for passport in the session cookie. In this method, we will receive the value stored in the cookie, in our case the `user.id`, then search for a user using this ID and then call the callback. The user object will then be stored in the request object passed to all controller method calls.
 
 <!-- Actually 2:25 -->
 
@@ -266,8 +265,9 @@ This will store the message 'This email is already used.' into the response obje
 In the view `signup.ejs`, before the form, add:
 
 ```ejs
-  <% if (message) %>
+  <% if (message.length > 0) { %>
     <div class="alert alert-danger"><%= message %></div>
+  <% } %>
 ```
 
 Finally, we need to render this template when we go to the `'/signup'` page, so let's add some code into `getSignup` in the `users` Controller:
@@ -285,6 +285,8 @@ Now, let's start up the app using `nodemon app.js` and visit `http://localhost:3
 ## Test it out - Independent Practice
 
 All the logic for the signup is now set - you should be able to go to `/signup` and create a user.
+
+<!--Would probably be good to walk through what each file did in the chain before moving on to login-->
 
 <!-- 2:10 15 minutes -->
 
@@ -353,8 +355,9 @@ As we are again using flash messages, we will need to add some code to display t
 In `login.ejs`, add the same code that we added in `signup.ejs` to display the flash messages:
 
 ```javascript
-  <% if (message) %>
+  <% if (message.length > 0) { %>
     <div class="alert alert-danger"><%= message %></div>
+  <% } %>
 ```
 
 #### Login GET Route handler
@@ -367,7 +370,7 @@ Now, let's add the code to render the login form in the `getLogin` action in the
   }
 ```
 
-You'll notice that the flash message has a different name (`loginMessage`) than the in the signup route handler.
+You'll notice that the flash message has a different name (`loginMessage`) than in the signup route handler.
 
 #### Login POST Route handler
 
@@ -425,7 +428,8 @@ By default, passport will make the user available on the object `request`. In mo
 Now in the header partial, we can add:
 
 ```javascript
-<ul>
+<ul class="nav navbar-nav">
+    <li><a href="/secret">Secret</a></li>
   <% if (currentUser) {%>
     <li><a href="/logout">Logout <%= currentUser.local.email %></a></li>
   <% } else { %>
@@ -488,7 +492,7 @@ For the `/secret` route, we need to add this to the `/config/routes.js` file:
 
 Now every time the route `/secret` is called, the method `authenticatedUser` will be executed first. In this method, we either redirect to the homepage or go to the next method to execute.
 
-Now test it out by clicking on the secret page link. You should see: "This page can only be accessed by authenticated users"
+Now test it out by clicking on the secret page link. If you are not logged in, it will simply redirect you to the home page.
 
 ### Final Challenge
 
