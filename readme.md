@@ -1,5 +1,7 @@
 <!--Had to start at 1:30 -->
 
+<!--1:33 WDI 3 -->
+
 <!--12:10 5 minutes -->
 
 <!--Hook: Try to think back to our work in Mongo and Mongoose, saving objects to our database.  Another object we may want to save is our user.  And that process is basically the same as it was with our objects.  Except for a couple pieces that make it a little harder.  Today, we'll talk about those.-->
@@ -18,6 +20,7 @@
 - **Create** a Mongoose Model
 - **Describe** an authentication model
 
+<!--1:36 WDI3 -->
 <!--12:15 5 minutes -->
 ## Passport - Intro
 
@@ -27,7 +30,7 @@ From the [passport website](http://passportjs.org/docs):
 
 _In modern web applications, authentication can take a variety of forms. Traditionally, users log in by providing a username and password. With the rise of social networking, single sign-on using an OAuth provider such as Facebook or Twitter has become a popular authentication method. Services that expose an API often require token-based credentials to protect access._"
 
-<!--1:37 actually -->
+<!--1:37 actually WDI2 -->
 
 ### Strategies
 
@@ -42,7 +45,7 @@ For instance, if login is not successful, passport may redirect to the `/login` 
 
 First, fork and clone the starter code, and `npm install` to ensure that we have all of the correct dependencies.
 
-<!--1:40 actually-->
+<!--1:40 actually WDI2-->
 
 The starter-code is structured like this:
 
@@ -74,6 +77,8 @@ The starter-code is structured like this:
 7 directories, 12 files
 ```
 
+<!--WDI3 1:42 when turning over to devs 1:45 back-->
+
 Now let's open the code up in Sublime.
 
 #### Users & Statics Controller
@@ -95,6 +100,7 @@ The `statics.js` controller just has the home action.
 
 We have separated the routes into their own `routes.js` file in the `config` folder.
 
+<!--1:49 WDI3 -->
 <!--1:30 25 minutes -->
 
 #### Signup
@@ -137,6 +143,8 @@ Then, we pass the function that we want to be executed as a callback when this s
 
 Now, inside this callback method, we will implement our custom logic to signup a user.
 
+<!--2:02 WDI3 -->
+
 ```javascript
   ...
   }, function(req, email, password, callback) {
@@ -173,7 +181,8 @@ If no user is returned, it means that the email received in the request can be u
 
 Based on the second argument (`false` or a `user` object), passport will know if the strategy has been successfully executed, and if the request should redirect to the `success` or `failure` path. (see below).
 
-<!--2:11 actually -->
+<!--2:16 WDI 3 -->
+<!--2:11 actually WDI2 -->
 
 #### User.js
 
@@ -188,6 +197,8 @@ The last thing is to add the method `encrypt` to the user model to hash the pass
 As we mentioned in the previous lesson, we generate a salt token and then hash the password using this new salt.
 
 That's all for the signup strategy.
+
+<!--2:22 actually WDI3 2:27 turning over to devs-->
 
 #### Route Handler
 
@@ -288,6 +299,9 @@ All the logic for the signup is now set - you should be able to go to `/signup` 
 
 <!--Would probably be good to walk through what each file did in the chain before moving on to login-->
 
+<!-- 2:47 turning over to devs -->
+
+<!--3:10 after break and resolving testing issues WDI3 -->
 <!-- 2:10 15 minutes -->
 
 ## Sign-in - Codealong
@@ -338,6 +352,8 @@ Inside `config/passport.js` let's add this code:
 
 ```
 
+<!--WDI3 3:21 turning over to devs, return 3:27-->
+
 #### User validate method
 
 We need to add a new method to the user schema in `user.js` so that we can use the method `user.validatePassword()`. Let's add:
@@ -347,6 +363,8 @@ We need to add a new method to the user schema in `user.js` so that we can use t
     return bcrypt.compareSync(password, this.local.password);
   };
 ```
+
+<!--3:29 to devs 3:31 return -->
 
 #### Adding flash messages to the view
 
@@ -371,6 +389,8 @@ Now, let's add the code to render the login form in the `getLogin` action in the
 ```
 
 You'll notice that the flash message has a different name (`loginMessage`) than in the signup route handler.
+
+<!--3:34 return WDI3-->
 
 #### Login POST Route handler
 
@@ -411,6 +431,7 @@ Now, try to login with valid details and you should be taken to the index page w
 
 The login strategy has now been setup!
 
+<!--Kinda gave up on all the errors, and plowed through around 3:40 -->
 
 #### Accessing the User object globally
 
@@ -506,6 +527,8 @@ Passport is a really useful tool because it allows developers to abstract the lo
 
 - What does it mean for a user to be "logged in"?
 - Briefly describe the authentication process using passport in Express.
+
+<!--WDI3 Finished 4:03 -->
 
 ## Resources
 
