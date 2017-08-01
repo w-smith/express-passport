@@ -3,7 +3,7 @@
 <!--1:33 WDI 3 -->
 
 <!--12:10 5 minutes -->
-
+<!--12:21 WDI4 -->
 <!--Hook: Try to think back to our work in Mongo and Mongoose, saving objects to our database.  Another object we may want to save is our user.  And that process is basically the same as it was with our objects.  Except for a couple pieces that make it a little harder.  Today, we'll talk about those.-->
 
 # Local Authentication with Express and Passport
@@ -21,6 +21,7 @@
 - **Describe** an authentication model
 
 <!--1:36 WDI3 -->
+<!--12:25 WDI4 -->
 <!--12:15 5 minutes -->
 ## Passport - Intro
 
@@ -38,13 +39,14 @@ The main concept when using passport is to register _Strategies_.  A strategy is
 
 For instance, if login is not successful, passport may redirect to the `/login` page.  If successful, it may redirect to the homepage.
 
+<!--12:30 WDI4 -->
 <!--12:20 5 minutes -->
 ## Implementing Passport.js - Catch-up
 
 #### Setup/Review Starter Code
 
 First, fork and clone the starter code, and `npm install` to ensure that we have all of the correct dependencies.
-
+<!--WDI4 1:32, 1:34 turning over to devs -->
 <!--1:40 actually WDI2-->
 
 The starter-code is structured like this:
@@ -78,6 +80,7 @@ The starter-code is structured like this:
 ```
 
 <!--WDI3 1:42 when turning over to devs 1:45 back-->
+<!--WDI4 coming back 1:36 -->
 
 Now let's open the code up in Sublime.
 
@@ -101,6 +104,7 @@ The `statics.js` controller just has the home action.
 We have separated the routes into their own `routes.js` file in the `config` folder.
 
 <!--1:49 WDI3 -->
+<!--WDI4 1:39 -->
 <!--1:30 25 minutes -->
 
 #### Signup
@@ -132,6 +136,9 @@ var LocalStrategy   = require('passport-local').Strategy;
    }));
 };
 ```
+
+<!--WDI4 1:45 without inside of function -->
+<!--WDI4 1:53 with inside of function -->
 
 Here we are declaring the strategy for the signup - the first argument given to `LocalStrategy` is an object giving info about the fields we will use for the authentication.
 
@@ -173,6 +180,8 @@ Now, inside this callback method, we will implement our custom logic to signup a
 
 ```
 
+<!--2:06 WDI4-->
+
 First we try to find the email in the database.
 
 Once we have the result of this mongo request, we will check if a user document is returned - meaning that a user with this email already exists.  In this case, we will call the `callback` method with the two arguments `null` and `false` - the first argument indicates no server error happened; the second one corresponds to a new user object, which in this case hasn't been created, so we return `false`.
@@ -190,7 +199,7 @@ The last thing is to add the method `encrypt` to the user model to hash the pass
 
 ```javascript
   User.methods.encrypt = function(password) {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
   };
 ```
 
@@ -198,6 +207,7 @@ As we mentioned in the previous lesson, we generate a salt token and then hash t
 
 That's all for the signup strategy.
 
+<!--WDI4 2:10 -->
 <!--2:22 actually WDI3 2:27 turning over to devs-->
 
 #### Route Handler
@@ -224,6 +234,8 @@ The second argument tells passport what to do in case of a success or failure.
 
 - If the authentication was successful, then the response will redirect to `/`
 - In case of failure, the response will redirect back to the form `/signup`
+
+<!--WDI4 2:18 -->
 
 #### Session
 
@@ -254,6 +266,9 @@ The method `serializeUser` will be used when a user signs in or signs up, passpo
 The second method will then be called every time there is a value for passport in the session cookie. In this method, we will receive the value stored in the cookie, in our case the `user.id`, then search for a user using this ID and then call the callback. The user object will then be stored in the request object passed to all controller method calls.
 
 <!-- Actually 2:25 -->
+<!--WDI4 2:22 turning over to devs -->
+<!--WDI4 2:26 -->
+<!--WDI4 by the time we debugged all but one (goddammit, why all but one?) issue it was 3:30, with break time 3:02-3:15-->
 
 <!--1:55 5 minutes -->
 
@@ -299,7 +314,8 @@ All the logic for the signup is now set - you should be able to go to `/signup` 
 
 <!--Would probably be good to walk through what each file did in the chain before moving on to login-->
 
-<!-- 2:47 turning over to devs -->
+<!-- 2:47 WDI2 turning over to devs -->
+<!--3:44 WDI4 -->
 
 <!--3:10 after break and resolving testing issues WDI3 -->
 <!-- 2:10 15 minutes -->
@@ -319,6 +335,9 @@ We also need to implement a custom strategy for the login. In `passport.js`, aft
 
   }));
 ```
+
+<!--3:46 WDI4 turning over to devs -->
+<!--3:48 WDI4 coming back -->
 
 The first argument is the same as for the signup strategy - we ask passport to recognize the fields `email` and `password` and to pass the request to the callback function.
 
@@ -363,6 +382,10 @@ We need to add a new method to the user schema in `user.js` so that we can use t
     return bcrypt.compareSync(password, this.local.password);
   };
 ```
+
+<!--3:51 WDI4 turning over to devs -->
+<!--3:56 WDI4 coming back -->
+<!--WDI4 Just Flew Through steps...will come back to it for second pass tomorrow -->
 
 <!--3:29 to devs 3:31 return -->
 
