@@ -2,6 +2,7 @@
 
 <!--1:33 WDI 3 -->
 
+<!--WDI5 1:40 -->
 <!--12:10 5 minutes -->
 <!--12:21 WDI4 -->
 <!--Hook: Try to think back to our work in Mongo and Mongoose, saving objects to our database.  Another object we may want to save is our user.  And that process is basically the same as it was with our objects.  Except for a couple pieces that make it a little harder.  Today, we'll talk about those.-->
@@ -31,6 +32,7 @@ From the [passport website](http://passportjs.org/docs):
 
 _In modern web applications, authentication can take a variety of forms. Traditionally, users log in by providing a username and password. With the rise of social networking, single sign-on using an OAuth provider such as Facebook or Twitter has become a popular authentication method. Services that expose an API often require token-based credentials to protect access._"
 
+<!--WDI5 1:45 -->
 <!--1:37 actually WDI2 -->
 
 ### Strategies
@@ -79,6 +81,7 @@ The starter-code is structured like this:
 7 directories, 12 files
 ```
 
+<!--WDI5 1:51   -->
 <!--WDI3 1:42 when turning over to devs 1:45 back-->
 <!--WDI4 coming back 1:36 -->
 
@@ -103,6 +106,7 @@ The `statics.js` controller just has the home action.
 
 We have separated the routes into their own `routes.js` file in the `config` folder.
 
+<!--WDI5 1:52 -->
 <!--1:49 WDI3 -->
 <!--WDI4 1:39 -->
 <!--1:30 25 minutes -->
@@ -138,6 +142,8 @@ var LocalStrategy   = require('passport-local').Strategy;
 ```
 
 <!--WDI4 1:45 without inside of function -->
+<!--WDI5 when done with blank function 2:00  -->
+<!--WDI5 when done with inside 2:08  -->
 <!--WDI4 1:53 with inside of function -->
 
 Here we are declaring the strategy for the signup - the first argument given to `LocalStrategy` is an object giving info about the fields we will use for the authentication.
@@ -190,6 +196,7 @@ If no user is returned, it means that the email received in the request can be u
 
 Based on the second argument (`false` or a `user` object), passport will know if the strategy has been successfully executed, and if the request should redirect to the `success` or `failure` path. (see below).
 
+<!--WDI5 2:22 -->
 <!--2:16 WDI 3 -->
 <!--2:11 actually WDI2 -->
 
@@ -207,6 +214,7 @@ As we mentioned in the previous lesson, we generate a salt token and then hash t
 
 That's all for the signup strategy.
 
+<!--WDI5 2:26  -->
 <!--WDI4 2:10 -->
 <!--2:22 actually WDI3 2:27 turning over to devs-->
 
@@ -235,6 +243,7 @@ The second argument tells passport what to do in case of a success or failure.
 - If the authentication was successful, then the response will redirect to `/`
 - In case of failure, the response will redirect back to the form `/signup`
 
+<!--WDI5 2:33  -->
 <!--WDI4 2:18 -->
 
 #### Session
@@ -265,6 +274,7 @@ The method `serializeUser` will be used when a user signs in or signs up, passpo
 
 The second method will then be called every time there is a value for passport in the session cookie. In this method, we will receive the value stored in the cookie, in our case the `user.id`, then search for a user using this ID and then call the callback. The user object will then be stored in the request object passed to all controller method calls.
 
+<!--WDI5 2:40  -->
 <!-- Actually 2:25 -->
 <!--WDI4 2:22 turning over to devs -->
 <!--WDI4 2:26 -->
@@ -296,6 +306,8 @@ In the view `signup.ejs`, before the form, add:
   <% } %>
 ```
 
+<!--WDI4 2:45  -->
+
 Finally, we need to render this template when we go to the `'/signup'` page, so let's add some code into `getSignup` in the `users` Controller:
 
 ```javascript
@@ -306,6 +318,7 @@ Finally, we need to render this template when we go to the `'/signup'` page, so 
 
 Now, let's start up the app using `nodemon app.js` and visit `http://localhost:3000/signup` and try to sign up two times with the same email. We should see the message "This email is already used." appearing when the form is reloaded.
 
+<!--WDI5 2:48 -->
 <!-- 2:05 5 minutes -->
 
 ## Test it out - Independent Practice
@@ -317,6 +330,7 @@ All the logic for the signup is now set - you should be able to go to `/signup` 
 <!-- 2:47 WDI2 turning over to devs -->
 <!--3:44 WDI4 -->
 
+<!--WDI5 after break and resolving issues 3:16  -->
 <!--3:10 after break and resolving testing issues WDI3 -->
 <!-- 2:10 15 minutes -->
 
@@ -336,6 +350,7 @@ We also need to implement a custom strategy for the login. In `passport.js`, aft
   }));
 ```
 
+<!--WDI5 3:21  -->
 <!--3:46 WDI4 turning over to devs -->
 <!--3:48 WDI4 coming back -->
 
@@ -371,6 +386,7 @@ Inside `config/passport.js` let's add this code:
 
 ```
 
+<!--WDI5 3:30 -->
 <!--WDI3 3:21 turning over to devs, return 3:27-->
 
 #### User validate method
@@ -383,6 +399,7 @@ We need to add a new method to the user schema in `user.js` so that we can use t
   };
 ```
 
+<!--WDI5 3:34 -->
 <!--3:51 WDI4 turning over to devs -->
 <!--3:56 WDI4 coming back -->
 <!--WDI4 Just Flew Through steps...will come back to it for second pass tomorrow -->
@@ -421,18 +438,19 @@ We also need to have a route handler that deals with the login form after we hav
 
 ```javascript
   function postLogin(request, response, next) {
-    var loginProperty = passport.authenticate('local-login', {
+    var loginStrategy = passport.authenticate('local-login', {
       successRedirect : '/',
       failureRedirect : '/login',
       failureFlash : true
     });
 
-    return loginProperty(request, response, next);
+    return loginStrategy(request, response, next);
   }
 ```
 
 You should be able to login now!
 
+<!--WDI5 3:42  -->
 <!--2:25 5 minutes -->
 
 ## Test it out - Independent Practice
@@ -483,6 +501,7 @@ Now in the header partial, we can add:
 </ul>
 ```
 
+<!--4:00 WDI5 -->
 <!--2:30 5 minutes -->
 
 ## Signout - Codealong
@@ -505,6 +524,7 @@ function getLogout(request, response, next) {
 
 You should now be able to login and logout! Test this out.
 
+<!--WDI5 4:03, and just talked out last piece plus basic passport advice for project 2 -->
 <!--2:40 10 minutes -->
 
 ## Restricting access
